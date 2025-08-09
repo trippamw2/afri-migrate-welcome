@@ -26,7 +26,7 @@ export default function Dashboard() {
       <Navbar />
       <main className="flex-1">
         <section className="container mx-auto px-4 py-10">
-          <h1 className="font-display text-3xl mb-2">Welcome, {user.email}</h1>
+          <h1 className="font-display text-2xl md:text-3xl mb-2">Welcome, <span className="break-words">{user.email}</span></h1>
           <p className="text-muted-foreground mb-6">This is your dashboard. We'll add personalized guidance and progress tracking here.</p>
           <Button variant="brand" onClick={() => { signOut(); navigate("/", { replace: true }); }}>Sign Out</Button>
         </section>
