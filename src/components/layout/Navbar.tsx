@@ -13,7 +13,6 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-6 md:flex">
           <NavLink to="/#pricing" className="text-sm hover:text-foreground/80">Pricing</NavLink>
-          <NavLink to="/#about" className="text-sm hover:text-foreground/80">About</NavLink>
           <NavLink to="/#contact" className="text-sm hover:text-foreground/80">Contact</NavLink>
         </div>
 

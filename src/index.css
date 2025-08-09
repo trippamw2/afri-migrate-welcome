@@ -43,6 +43,10 @@ All colors MUST be HSL.
     /* Extras */
     --radius: 0.5rem;
 
+    /* Gradients */
+    --gradient-hero: radial-gradient(1200px 600px at 10% 10%, hsl(var(--brand-orange) / 0.12), transparent 50%), linear-gradient(180deg, hsl(var(--background)), hsl(var(--background)));
+
+
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -115,5 +119,11 @@ All colors MUST be HSL.
   }
   .hover-scale {
     @apply transition-transform duration-200 hover:scale-105;
+  }
+  .hero-bg {
+    background: var(--gradient-hero);
+  }
+  .card-elevated {
+    @apply shadow-sm border;
   }
 }
