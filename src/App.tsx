@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Jobs from "./pages/Jobs";
 import Skills from "./pages/Skills";
+import Visa from "./pages/Visa";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/signup" element={<Signup />} />
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/skills" element={<Skills />} />
+          <Route path="/visa" element={<Visa />} />
           <Route path="/dashboard" element={<Dashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
