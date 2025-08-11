@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Calendar, FileText, Headset, Languages, ShieldCheck, CreditCard, CheckCircle2, AlertCircle } from "lucide-react";
+import Navbar from "@/components/layout/Navbar";
 
 // Types
 interface BaseRequest {
@@ -146,6 +147,7 @@ const Addons: React.FC = () => {
         <link rel="canonical" href={`${window.location.origin}/addons`} />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
+      <Navbar />
 
       <main className="container mx-auto px-4 py-10">
         <header className="mb-8">

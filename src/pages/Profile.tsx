@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import Navbar from "@/components/layout/Navbar";
+import { MobileCard } from "@/components/ui/mobile-card";
 
 // Types
 type PersonalInfo = {
@@ -187,6 +189,7 @@ export default function Profile() {
         <meta name="description" content="Manage your profile, skills, experience, languages, and CV documents in one place." />
         <link rel="canonical" href={typeof window !== 'undefined' ? window.location.href : '/profile'} />
       </Helmet>
+      <Navbar />
 
       <header className="container mx-auto px-4 py-6">
         <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Profile & Settings</h1>
@@ -194,9 +197,9 @@ export default function Profile() {
       </header>
 
       <main className="container mx-auto px-4 pb-16">
-        <div className="mb-4 flex justify-end">
+        <MobileCard className="mb-4 flex justify-end">
           <Button onClick={saveProfile} disabled={!canSave} variant="brand">Save Changes</Button>
-        </div>
+        </MobileCard>
 
         <Tabs defaultValue="personal" className="w-full">
           <TabsList className="w-full flex flex-wrap gap-2">

@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { MessageSquare, Users, Star, Link as LinkIcon, Crown } from "lucide-react";
 import { MobileCard } from "@/components/ui/mobile-card";
+import Navbar from "@/components/layout/Navbar";
 
 const isPremium = () => localStorage.getItem("am_subscription") === "premium";
 
@@ -51,6 +52,7 @@ const SupportPage: React.FC = () => {
         <link rel="canonical" href={`${window.location.origin}/support`} />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
+      <Navbar />
 
       <main className="container mx-auto px-4 py-8">
         <header className="mb-6">
