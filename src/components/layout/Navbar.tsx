@@ -17,6 +17,7 @@ export default function Navbar() {
           <NavLink to="/profile" className="text-sm hover:text-foreground/80">Profile</NavLink>
           <NavLink to="/visa" className="text-sm hover:text-foreground/80">Visa</NavLink>
           <NavLink to="/addons" className="text-sm hover:text-foreground/80">Addons</NavLink>
+          <NavLink to="/support" className="text-sm hover:text-foreground/80">Support</NavLink>
           <NavLink to="/#pricing" className="text-sm hover:text-foreground/80">Pricing</NavLink>
           <NavLink to="/#contact" className="text-sm hover:text-foreground/80">Contact</NavLink>
         </div>
