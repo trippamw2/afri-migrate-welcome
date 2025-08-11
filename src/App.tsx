@@ -12,6 +12,7 @@ import Jobs from "./pages/Jobs";
 import Skills from "./pages/Skills";
 import Visa from "./pages/Visa";
 import Profile from "./pages/Profile";
+import Addons from "./pages/Addons";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/visa" element={<Visa />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/addons" element={<Addons />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
