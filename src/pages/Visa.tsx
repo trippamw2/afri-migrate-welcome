@@ -87,7 +87,7 @@ function saveApps(apps: VisaApplication[]) {
 // -------------------- Component --------------------
 export default function Visa() {
   const { toast } = useToast();
-  const [tab, setTab] = useState<"requirements" | "wizard">("requirements");
+  const [tab, setTab] = useState<"requirements" | "wizard" | "tracking">("requirements");
 
   // Requirements
   const [country, setCountry] = useState<string>(COUNTRIES[0] || "Canada");
@@ -232,6 +232,7 @@ export default function Visa() {
                 <TabsList className="flex-wrap gap-2">
                   <TabsTrigger value="requirements">Visa Requirements</TabsTrigger>
                   <TabsTrigger value="wizard">AI Visa Wizard</TabsTrigger>
+                  <TabsTrigger value="tracking">Application Tracking</TabsTrigger>
                 </TabsList>
 
                 {/* Requirements Tab */}
@@ -515,6 +516,55 @@ export default function Visa() {
                     <CardHeader>
                       <CardTitle className="text-lg">Your Applications</CardTitle>
                       <CardDescription>Status is stored locally for now. Connect Supabase to sync.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {apps.length === 0 ? (
+                        <div className="text-sm text-muted-foreground">No applications yet. Complete the wizard to add one.</div>
+                      ) : (
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-sm">
+                            <thead className="text-left text-muted-foreground">
+                              <tr>
+                                <th className="py-2 pr-2">Applicant</th>
+                                <th className="py-2 pr-2">Country</th>
+                                <th className="py-2 pr-2">Visa Type</th>
+                                <th className="py-2 pr-2">Status</th>
+                                <th className="py-2 pr-2">Updated</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {apps.map((a) => (
+                                <tr key={a.id} className="border-t">
+                                  <td className="py-2 pr-2 break-words">{a.applicantName}</td>
+                                  <td className="py-2 pr-2">{a.country}</td>
+                                  <td className="py-2 pr-2 break-words">{a.visaType}</td>
+                                  <td className="py-2 pr-2">
+                                    <Select value={a.status} onValueChange={(v) => updateStatus(a.id, v as AppStatus)}>
+                                      <SelectTrigger className="h-8 w-[160px]">
+                                        <SelectValue />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        {STATUSES.map((s) => (<SelectItem key={s} value={s}>{s}</SelectItem>))}
+                                      </SelectContent>
+                                    </Select>
+                                  </td>
+                                  <td className="py-2 pr-2 text-xs text-muted-foreground">{new Date(a.updatedAt).toLocaleString()}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Tracking Tab */}
+                <TabsContent value="tracking" className="space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Application Tracking</CardTitle>
+                      <CardDescription>Manage and update your visa applications.</CardDescription>
                     </CardHeader>
                     <CardContent>
                       {apps.length === 0 ? (
