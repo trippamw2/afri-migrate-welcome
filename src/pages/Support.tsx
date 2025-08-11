@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { MessageSquare, Users, Star, Link as LinkIcon, Crown } from "lucide-react";
+import { MobileCard } from "@/components/ui/mobile-card";
 
 const isPremium = () => localStorage.getItem("am_subscription") === "premium";
 
@@ -55,11 +56,13 @@ const SupportPage: React.FC = () => {
         <header className="mb-6">
           <h1 className="text-3xl font-bold tracking-tight">Support & Community</h1>
           <p className="text-muted-foreground mt-2">Ask questions, connect with others, and learn from real success stories.</p>
-          <nav className="mt-4 flex flex-wrap gap-2" aria-label="Quick links">
-            <Button asChild variant="outline" size="sm"><Link to="/skills">Go to Skills</Link></Button>
-            <Button asChild variant="outline" size="sm"><Link to="/visa">Go to Visa</Link></Button>
-            <Button asChild variant="outline" size="sm"><Link to="/addons">Go to Addons</Link></Button>
-            <Button asChild variant="outline" size="sm"><Link to="/profile">Go to Profile</Link></Button>
+          <nav className="mt-4" aria-label="Quick links">
+            <MobileCard className="flex flex-wrap gap-2">
+              <Button asChild variant="outline" size="sm"><Link to="/skills">Go to Skills</Link></Button>
+              <Button asChild variant="outline" size="sm"><Link to="/visa">Go to Visa</Link></Button>
+              <Button asChild variant="outline" size="sm"><Link to="/addons">Go to Addons</Link></Button>
+              <Button asChild variant="outline" size="sm"><Link to="/profile">Go to Profile</Link></Button>
+            </MobileCard>
           </nav>
         </header>
 

@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import hero from "@/assets/hero-afrimigrate.jpg";
 import { Link } from "react-router-dom";
 import { UserPlus, ClipboardCheck, Plane } from "lucide-react";
+import { MobileCard } from "@/components/ui/mobile-card";
 
 const Index = () => {
   return (
@@ -27,14 +28,14 @@ const Index = () => {
               <p className="text-lg text-muted-foreground">
                 A simple plan, expert support, and tools built for African professionals.
               </p>
-              <div className="flex flex-wrap gap-3">
+              <MobileCard className="flex flex-wrap gap-3">
                 <Button asChild variant="hero" size="lg" className="hover-scale" aria-label="Get started for free">
                   <Link to="/signup">Get Started Free</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" aria-label="Log in">
                   <Link to="/login">Log In</Link>
                 </Button>
-              </div>
+              </MobileCard>
             </div>
             <div className="relative">
               <img src={hero} alt="Professionals with global connections" loading="lazy" className="w-full h-auto rounded-lg border shadow-md" />

@@ -11,6 +11,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { useToast } from "@/hooks/use-toast";
 import { getUser } from "@/lib/auth";
 import { ExternalLink, BadgeCheck, Lock } from "lucide-react";
+import { MobileCard } from "@/components/ui/mobile-card";
 
 // Mock job data (visaSponsored + premium gating + source placeholders)
 // Later: Replace with merged results from Job Bank Canada, USAJobs, Adzuna, EURES
@@ -196,8 +197,10 @@ export default function Jobs() {
                 </Card>
               )}
               {hasMore && (
-                <div className="mt-4 flex justify-center">
-                  <Button variant="outline" onClick={() => setPage((p) => p + 1)}>Load more</Button>
+                <div className="mt-4">
+                  <MobileCard className="flex justify-center">
+                    <Button variant="outline" onClick={() => setPage((p) => p + 1)}>Load more</Button>
+                  </MobileCard>
                 </div>
               )}
             </div>
