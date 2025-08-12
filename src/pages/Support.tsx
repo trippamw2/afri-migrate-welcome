@@ -225,7 +225,17 @@ const CommunitySection: React.FC = () => {
   const [threads, setThreads] = useState<Thread[]>(() => {
     try {
       const raw = localStorage.getItem(FORUM_KEY);
-      if (raw) return JSON.parse(raw);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed)
+          ? parsed.map((t: any) => ({
+              ...t,
+              tags: Array.isArray(t?.tags) ? t.tags : [],
+              votes: typeof t?.votes === "number" ? t.votes : 0,
+              posts: Array.isArray(t?.posts) ? t.posts : [],
+            }))
+          : [];
+      }
     } catch {}
     const seed: Thread[] = [
       { id: crypto.randomUUID(), title: "Canada Study Permit timeline 2025", author: "Ada", createdAt: Date.now() - 86400000, tags: ["Canada", "Study"], votes: 3, posts: [ { id: crypto.randomUUID(), author: "Ada", text: "Submitted in May, biometrics in June.", ts: Date.now() - 86300000 } ] },
@@ -255,6 +265,7 @@ const CommunitySection: React.FC = () => {
   };
 
   const addPost = () => {
+    if (!selected) return toast({ title: "Select a thread", variant: "destructive" });
     const text = newPost.trim();
     if (!text) return toast({ title: "Write a post message", variant: "destructive" });
     setThreads((prev) => prev.map((t) => t.id === selected.id ? { ...t, posts: [...t.posts, { id: crypto.randomUUID(), author: "You", text, ts: Date.now() }] } : t));
@@ -301,7 +312,7 @@ const CommunitySection: React.FC = () => {
               <CardDescription>Join the discussion.</CardDescription>
               {selected && (
                 <div className="mt-2 flex flex-wrap gap-1">
-                  {selected.tags.map((tag) => (
+                  {selected.tags?.map((tag) => (
                     <Badge key={tag} variant="secondary" className="text-[10px]">{tag}</Badge>
                   ))}
                 </div>
@@ -331,7 +342,7 @@ const CommunitySection: React.FC = () => {
               </ul>
               <div className="mt-4 flex gap-2">
                 <Textarea value={newPost} onChange={(e) => setNewPost(e.target.value)} placeholder="Write a reply..." />
-                <Button onClick={addPost}>Send</Button>
+                <Button onClick={addPost} disabled={!selected}>Send</Button>
               </div>
             </>
           )}
