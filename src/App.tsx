@@ -13,7 +13,7 @@ import Skills from "./pages/Skills";
 import Visa from "./pages/Visa";
 import Profile from "./pages/Profile";
 import Addons from "./pages/Addons";
-import Support from "./pages/Support";
+import HelpCenter from "./pages/HelpCenter";
 import Pricing from "./pages/Pricing";
 import PricingFreemium from "./pages/PricingFreemium";
 import PricingPro from "./pages/PricingPro";
@@ -37,7 +37,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/addons" element={<Addons />} />
-          <Route path="/support" element={<Support />} />
+          <Route path="/support" element={<HelpCenter />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/pricing/freemium" element={<PricingFreemium />} />
           <Route path="/pricing/pro" element={<PricingPro />} />
