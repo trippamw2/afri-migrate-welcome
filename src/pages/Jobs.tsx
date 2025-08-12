@@ -10,8 +10,9 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { getUser } from "@/lib/auth";
-import { ExternalLink, BadgeCheck, Lock } from "lucide-react";
+import { ExternalLink, BadgeCheck, Lock, Loader2, Filter } from "lucide-react";
 import { MobileCard } from "@/components/ui/mobile-card";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 
 // Mock job data (visaSponsored + premium gating + source placeholders)
 // Later: Replace with merged results from Job Bank Canada, USAJobs, Adzuna, EURES
@@ -49,7 +50,8 @@ export default function Jobs() {
   const [skills, setSkills] = useState("");
   const [tab, setTab] = useState<"visa" | "nonVisa">("visa");
   const [page, setPage] = useState(1);
-  const pageSize = 6;
+const pageSize = 6;
+const [loadingNext, setLoadingNext] = useState(false);
 
   // Filter logic
   const results = useMemo(() => {
@@ -129,6 +131,79 @@ export default function Jobs() {
             <p className="text-muted-foreground">Visa-aware filters, clear listings, and smart suggestions.</p>
           </header>
 
+          {/* Quick Job Search trigger (modal) */}
+          <div className="mb-4">
+            <MobileCard>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button size="lg" aria-haspopup="dialog" aria-controls="job-search-dialog" className="w-full sm:w-auto">
+                    <Filter className="mr-2 h-4 w-4" /> Job Search
+                  </Button>
+                </DialogTrigger>
+                <DialogContent id="job-search-dialog" aria-label="Refine job search">
+                  <DialogHeader>
+                    <DialogTitle>Refine Job Search</DialogTitle>
+                    <DialogDescription>Adjust filters and apply to update results.</DialogDescription>
+                  </DialogHeader>
+
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    <Input
+                      placeholder="Search by title or employer"
+                      value={query}
+                      onChange={(e) => {
+                        setPage(1);
+                        setQuery(e.target.value);
+                      }}
+                      aria-label="Search"
+                    />
+                    <Input
+                      placeholder="Location (e.g., Toronto, Remote)"
+                      value={location}
+                      onChange={(e) => {
+                        setPage(1);
+                        setLocation(e.target.value);
+                      }}
+                      aria-label="Location"
+                    />
+                    <Select value={jobType} onValueChange={(v) => { setPage(1); setJobType(v); }}>
+                      <SelectTrigger aria-label="Job Type">
+                        <SelectValue placeholder="Job Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Full-time">Full-time</SelectItem>
+                        <SelectItem value="Part-time">Part-time</SelectItem>
+                        <SelectItem value="Contract">Contract</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Input
+                      placeholder="Required skills (comma-separated)"
+                      value={skills}
+                      onChange={(e) => { setPage(1); setSkills(e.target.value); }}
+                      aria-label="Required skills"
+                    />
+                  </div>
+
+                  <div className="mt-4">
+                    <Tabs value={tab} onValueChange={(v) => setTab(v as any)}>
+                      <TabsList className="flex-wrap">
+                        <TabsTrigger value="visa">Visa-Sponsored Jobs</TabsTrigger>
+                        <TabsTrigger value="nonVisa">Non Visa-Sponsored Jobs</TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="visa" />
+                      <TabsContent value="nonVisa" />
+                    </Tabs>
+                  </div>
+
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <Button type="button" variant="secondary">Close</Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </MobileCard>
+          </div>
+
           {/* Filters */}
           <Card className="mb-6">
             <CardContent className="pt-6">
@@ -197,9 +272,29 @@ export default function Jobs() {
                 </Card>
               )}
               {hasMore && (
-                <div className="mt-4">
+                <div className="mt-4" aria-live="polite">
                   <MobileCard className="flex justify-center">
-                    <Button variant="outline" onClick={() => setPage((p) => p + 1)}>Load more</Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setLoadingNext(true);
+                        window.setTimeout(() => {
+                          setPage((p) => p + 1);
+                          setLoadingNext(false);
+                        }, 400);
+                      }}
+                      disabled={loadingNext}
+                      aria-label="Next page of jobs"
+                      aria-busy={loadingNext}
+                    >
+                      {loadingNext ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" /> Loading
+                        </>
+                      ) : (
+                        <>Next</>
+                      )}
+                    </Button>
                   </MobileCard>
                 </div>
               )}
