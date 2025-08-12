@@ -15,6 +15,9 @@ import Profile from "./pages/Profile";
 import Addons from "./pages/Addons";
 import Support from "./pages/Support";
 import Pricing from "./pages/Pricing";
+import PricingFreemium from "./pages/PricingFreemium";
+import PricingPro from "./pages/PricingPro";
+import PricingPremium from "./pages/PricingPremium";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +39,9 @@ const App = () => (
           <Route path="/addons" element={<Addons />} />
           <Route path="/support" element={<Support />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/pricing/freemium" element={<PricingFreemium />} />
+          <Route path="/pricing/pro" element={<PricingPro />} />
+          <Route path="/pricing/premium" element={<PricingPremium />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

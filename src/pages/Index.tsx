@@ -4,6 +4,12 @@ import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import hero from "@/assets/hero-afrimigrate.jpg";
+import imgCanada from "@/assets/destinations/canada.jpg";
+import imgUK from "@/assets/destinations/uk.jpg";
+import imgGermany from "@/assets/destinations/germany.jpg";
+import imgAustralia from "@/assets/destinations/australia.jpg";
+import imgUAE from "@/assets/destinations/uae.jpg";
+import imgNetherlands from "@/assets/destinations/netherlands.jpg";
 import { Link } from "react-router-dom";
 import { UserPlus, ClipboardCheck, Plane, Shield, Zap, Users, Star, MapPin } from "lucide-react";
 import { MobileCard } from "@/components/ui/mobile-card";
@@ -171,15 +177,16 @@ const Index = () => {
             <p className="text-center text-muted-foreground mb-8">High-demand markets and visa pathways.</p>
             <div className="grid gap-4 md:grid-cols-3">
               {[
-                { flag: "🇨🇦", name: "Canada", visa: "Express Entry, Work Permits", jobs: "Tech, Healthcare, Skilled Trades" },
-                { flag: "🇬🇧", name: "United Kingdom", visa: "Skilled Worker, Global Talent", jobs: "NHS, Tech, Finance" },
-                { flag: "🇩🇪", name: "Germany", visa: "EU Blue Card", jobs: "Engineering, Tech, Research" },
-                { flag: "🇦🇺", name: "Australia", visa: "Skilled Independent/State Nomination", jobs: "Healthcare, Engineering" },
-                { flag: "🇦🇪", name: "UAE", visa: "Work Visa, Golden Visa", jobs: "Finance, Hospitality, Tech" },
-                { flag: "🇳🇱", name: "Netherlands", visa: "Highly Skilled Migrant", jobs: "Tech, Design, Research" },
+                { flag: "🇨🇦", name: "Canada", visa: "Express Entry, Work Permits", jobs: "Tech, Healthcare, Skilled Trades", img: imgCanada },
+                { flag: "🇬🇧", name: "United Kingdom", visa: "Skilled Worker, Global Talent", jobs: "NHS, Tech, Finance", img: imgUK },
+                { flag: "🇩🇪", name: "Germany", visa: "EU Blue Card", jobs: "Engineering, Tech, Research", img: imgGermany },
+                { flag: "🇦🇺", name: "Australia", visa: "Skilled Independent/State Nomination", jobs: "Healthcare, Engineering", img: imgAustralia },
+                { flag: "🇦🇪", name: "UAE", visa: "Work Visa, Golden Visa", jobs: "Finance, Hospitality, Tech", img: imgUAE },
+                { flag: "🇳🇱", name: "Netherlands", visa: "Highly Skilled Migrant", jobs: "Tech, Design, Research", img: imgNetherlands },
               ].map((d) => (
-                <Card key={d.name} className="animate-enter">
-                  <CardHeader>
+                <Card key={d.name} className="animate-enter overflow-hidden">
+                  <img src={d.img} alt={`${d.name} skyline and landmarks`} loading="lazy" className="w-full h-36 md:h-40 object-cover" />
+                  <CardHeader className="pt-4">
                     <div className="flex items-center gap-2"><MapPin className="h-5 w-5 text-accent" /><CardTitle>{d.flag} {d.name}</CardTitle></div>
                     <CardDescription>
                       <span className="block">Visas: {d.visa}</span>
@@ -217,6 +224,7 @@ const Index = () => {
                     <li>Templates</li>
                   </ul>
                   <Button asChild variant="outline" aria-label="Sign up free"><Link to="/signup">Sign up</Link></Button>
+                  <Button asChild variant="ghost" aria-label="Learn more about Freemium"><Link to="/pricing/freemium">Learn more</Link></Button>
                 </CardContent>
               </Card>
 
@@ -234,6 +242,7 @@ const Index = () => {
                     <li>Group Q&A</li>
                   </ul>
                   <Button asChild variant="brand" aria-label="Subscribe to Pro"><Link to="/signup">Subscribe</Link></Button>
+                  <Button asChild variant="ghost" aria-label="Learn more about Pro"><Link to="/pricing/pro">Learn more</Link></Button>
                 </CardContent>
               </Card>
 
@@ -251,6 +260,7 @@ const Index = () => {
                     <li>Priority support</li>
                   </ul>
                   <Button asChild variant="brand" aria-label="Subscribe to Premium"><Link to="/signup">Subscribe</Link></Button>
+                  <Button asChild variant="ghost" aria-label="Learn more about Premium"><Link to="/pricing/premium">Learn more</Link></Button>
                 </CardContent>
               </Card>
             </div>
