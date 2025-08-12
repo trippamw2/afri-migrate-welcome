@@ -14,6 +14,75 @@ export type Database = {
   }
   public: {
     Tables: {
+      countries: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          is_schengen: boolean
+          name: string
+          region: string | null
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          is_schengen?: boolean
+          name: string
+          region?: string | null
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          is_schengen?: boolean
+          name?: string
+          region?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          bucket: string
+          country_code: string | null
+          created_at: string
+          doc_type: string | null
+          id: string
+          metadata: Json | null
+          path: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bucket?: string
+          country_code?: string | null
+          created_at?: string
+          doc_type?: string | null
+          id?: string
+          metadata?: Json | null
+          path: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bucket?: string
+          country_code?: string | null
+          created_at?: string
+          doc_type?: string | null
+          id?: string
+          metadata?: Json | null
+          path?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       job_applications: {
         Row: {
           applied_at: string
@@ -127,6 +196,74 @@ export type Database = {
         }
         Relationships: []
       }
+      migration_pathways: {
+        Row: {
+          country_code: string
+          created_at: string
+          id: string
+          links: Json | null
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          country_code: string
+          created_at?: string
+          id?: string
+          links?: Json | null
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          country_code?: string
+          created_at?: string
+          id?: string
+          links?: Json | null
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "migration_pathways_country_code_fkey"
+            columns: ["country_code"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          read: boolean
+          title: string
+          type: string | null
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          read?: boolean
+          title: string
+          type?: string | null
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          read?: boolean
+          title?: string
+          type?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           country: string | null
@@ -198,6 +335,89 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "jobs"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_preferences: {
+        Row: {
+          created_at: string
+          destination_country_code: string | null
+          id: string
+          locale: string | null
+          origin_country_code: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          destination_country_code?: string | null
+          id?: string
+          locale?: string | null
+          origin_country_code?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          destination_country_code?: string | null
+          id?: string
+          locale?: string | null
+          origin_country_code?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      visa_categories: {
+        Row: {
+          category_code: string | null
+          country_code: string
+          created_at: string
+          description: string | null
+          documents: Json | null
+          fees: string | null
+          id: string
+          last_updated: string
+          name: string
+          processing_time: string | null
+          requirements: Json | null
+          updated_at: string
+        }
+        Insert: {
+          category_code?: string | null
+          country_code: string
+          created_at?: string
+          description?: string | null
+          documents?: Json | null
+          fees?: string | null
+          id?: string
+          last_updated?: string
+          name: string
+          processing_time?: string | null
+          requirements?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          category_code?: string | null
+          country_code?: string
+          created_at?: string
+          description?: string | null
+          documents?: Json | null
+          fees?: string | null
+          id?: string
+          last_updated?: string
+          name?: string
+          processing_time?: string | null
+          requirements?: Json | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visa_categories_country_code_fkey"
+            columns: ["country_code"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["code"]
           },
         ]
       }
