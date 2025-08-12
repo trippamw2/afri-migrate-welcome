@@ -31,10 +31,14 @@ export default function Navbar() {
         <div className="hidden items-center gap-6 md:flex">
           <NavLink to="/jobs" className="text-sm hover:text-foreground/80">Jobs</NavLink>
           <NavLink to="/visa" className="text-sm hover:text-foreground/80">Visa</NavLink>
+          <NavLink to="/support" className="text-sm hover:text-foreground/80">Support</NavLink>
           <NavLink to="/profile" className="text-sm hover:text-foreground/80">Profile</NavLink>
         </div>
 
         <div className="flex items-center gap-2">
+          <Button asChild variant="ghost" className="md:hidden">
+            <Link to="/support">Support</Link>
+          </Button>
           <Button asChild variant="ghost" className="hidden sm:inline-flex">
             <Link to="/login">Log In</Link>
           </Button>
