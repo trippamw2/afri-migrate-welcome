@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
+import HelpAssistant from "@/components/help/HelpAssistant";
 
 export default function HelpCenter() {
   const faqs = [
@@ -150,6 +151,7 @@ export default function HelpCenter() {
             </TabsContent>
           </Tabs>
         </section>
+        <HelpAssistant faqs={faqs} />
       </main>
       <Footer />
     </div>
