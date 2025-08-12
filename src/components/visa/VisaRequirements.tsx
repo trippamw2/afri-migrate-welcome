@@ -166,9 +166,9 @@ export default function VisaRequirements({ onNavigate }: VisaRequirementsProps) 
               <SelectValue placeholder="Select nationality" />
             </SelectTrigger>
             <SelectContent className="z-50 bg-popover">
-              {countries.map((country) => (
-                <SelectItem key={country} value={country}>
-                  {country}
+              {[...africanOrigins].sort((a,b)=>a.name.localeCompare(b.name)).map((c) => (
+                <SelectItem key={c.code} value={c.name}>
+                  {c.name}
                 </SelectItem>
               ))}
             </SelectContent>
