@@ -21,6 +21,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 const isPremium = () => localStorage.getItem("am_subscription") === "premium";
 
@@ -131,6 +132,7 @@ const SupportPage: React.FC = () => {
           </Card>
         </section>
       </main>
+      <Footer />
     </>
   );
 };

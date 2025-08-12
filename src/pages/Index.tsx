@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import hero from "@/assets/hero-afrimigrate.jpg";
 import { Link } from "react-router-dom";
-import { UserPlus, ClipboardCheck, Plane } from "lucide-react";
+import { UserPlus, ClipboardCheck, Plane, Shield, Zap, Users, Star, MapPin } from "lucide-react";
 import { MobileCard } from "@/components/ui/mobile-card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const Index = () => {
   return (
@@ -88,6 +89,108 @@ const Index = () => {
             </div>
             <div className="text-center mt-8">
               <Button asChild variant="brand" size="lg"><Link to="/signup">Start Free</Link></Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Why choose Afrimigrate */}
+        <section aria-labelledby="why-afrimigrate" className="border-t">
+          <div className="container mx-auto px-4 py-12">
+            <h2 id="why-afrimigrate" className="font-display text-3xl text-center mb-2">Why choose Afrimigrate</h2>
+            <p className="text-center text-muted-foreground mb-8">Three reasons thousands trust us.</p>
+            <div className="grid gap-4 md:grid-cols-3">
+              <Card className="animate-enter">
+                <CardHeader>
+                  <div className="flex items-center gap-2"><Shield className="h-5 w-5 text-accent" /><CardTitle>Trusted network</CardTitle></div>
+                  <CardDescription>Verified partners and up‑to‑date guidance.</CardDescription>
+                </CardHeader>
+              </Card>
+              <Card className="animate-enter">
+                <CardHeader>
+                  <div className="flex items-center gap-2"><Users className="h-5 w-5 text-accent" /><CardTitle>Expert support</CardTitle></div>
+                  <CardDescription>Advice that shortens your path.</CardDescription>
+                </CardHeader>
+              </Card>
+              <Card className="animate-enter">
+                <CardHeader>
+                  <div className="flex items-center gap-2"><Zap className="h-5 w-5 text-accent" /><CardTitle>Faster progress</CardTitle></div>
+                  <CardDescription>Smart checklists and templates that work.</CardDescription>
+                </CardHeader>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section aria-labelledby="testimonials" className="border-t">
+          <div className="container mx-auto px-4 py-12">
+            <h2 id="testimonials" className="font-display text-3xl text-center mb-2">What members say</h2>
+            <p className="text-center text-muted-foreground mb-8">Real stories from African professionals.</p>
+            <div className="relative">
+              <Carousel className="mx-auto max-w-5xl">
+                <CarouselContent>
+                  {[
+                    { name: "Aisha", role: "Nurse • Ghana → UK", rating: 5, text: "Afrimigrate’s checklist kept me on track and the community gave me courage." },
+                    { name: "Samuel", role: "Software • Nigeria → Canada", rating: 5, text: "The visa wizard clarified my docs. Offer in 6 weeks, permit in 5!" },
+                    { name: "Lerato", role: "Engineer • SA → Australia", rating: 4, text: "Templates + guidance saved me weeks. Clear next steps throughout." },
+                    { name: "Yusuf", role: "Finance • Kenya → UAE", rating: 4, text: "Loved the support and real examples from members who’ve done it." },
+                    { name: "Fatou", role: "Research • Senegal → Germany", rating: 5, text: "Great tips for language tests and academic visas." },
+                  ].map((t) => (
+                    <CarouselItem key={t.name} className="md:basis-1/2 lg:basis-1/3">
+                      <Card className="h-full">
+                        <CardHeader className="flex flex-row items-center gap-3">
+                          <img src="/placeholder.svg" alt={`Photo of ${t.name}`} className="h-10 w-10 rounded-full border" loading="lazy" />
+                          <div>
+                            <CardTitle className="text-base">{t.name}</CardTitle>
+                            <CardDescription>{t.role}</CardDescription>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                          <div className="flex gap-1" aria-label={`${t.rating} out of 5 stars`}>
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <Star key={i} className={`h-4 w-4 ${i < t.rating ? 'text-accent' : 'text-muted-foreground/40'}`} />
+                            ))}
+                          </div>
+                          <p className="text-sm text-muted-foreground">“{t.text}”</p>
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="bg-background/90 backdrop-blur z-10" />
+                <CarouselNext className="bg-background/90 backdrop-blur z-10" />
+              </Carousel>
+            </div>
+          </div>
+        </section>
+
+        {/* Popular destinations */}
+        <section aria-labelledby="destinations" className="border-t">
+          <div className="container mx-auto px-4 py-12">
+            <h2 id="destinations" className="font-display text-3xl text-center mb-2">Popular work destinations</h2>
+            <p className="text-center text-muted-foreground mb-8">High-demand markets and visa pathways.</p>
+            <div className="grid gap-4 md:grid-cols-3">
+              {[
+                { flag: "🇨🇦", name: "Canada", visa: "Express Entry, Work Permits", jobs: "Tech, Healthcare, Skilled Trades" },
+                { flag: "🇬🇧", name: "United Kingdom", visa: "Skilled Worker, Global Talent", jobs: "NHS, Tech, Finance" },
+                { flag: "🇩🇪", name: "Germany", visa: "EU Blue Card", jobs: "Engineering, Tech, Research" },
+                { flag: "🇦🇺", name: "Australia", visa: "Skilled Independent/State Nomination", jobs: "Healthcare, Engineering" },
+                { flag: "🇦🇪", name: "UAE", visa: "Work Visa, Golden Visa", jobs: "Finance, Hospitality, Tech" },
+                { flag: "🇳🇱", name: "Netherlands", visa: "Highly Skilled Migrant", jobs: "Tech, Design, Research" },
+              ].map((d) => (
+                <Card key={d.name} className="animate-enter">
+                  <CardHeader>
+                    <div className="flex items-center gap-2"><MapPin className="h-5 w-5 text-accent" /><CardTitle>{d.flag} {d.name}</CardTitle></div>
+                    <CardDescription>
+                      <span className="block">Visas: {d.visa}</span>
+                      <span className="block">Jobs: {d.jobs}</span>
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button asChild variant="outline" size="sm"><Link className="story-link" to="/visa" aria-label={`Explore ${d.name} visa options`}>Explore visas</Link></Button>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
