@@ -14,6 +14,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Lock, ExternalLink, Upload } from "lucide-react";
+import VisaRequirements from "@/components/visa/VisaRequirements";
 
 // -------------------- Mock Data --------------------
 const VISA_DATA: Record<string, {
@@ -237,58 +238,13 @@ export default function Visa() {
 
                 {/* Requirements Tab */}
                 <TabsContent value="requirements" className="space-y-4">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg">Destination Country</CardTitle>
-                      <CardDescription>Select a country to view visa types and details.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid gap-4 md:grid-cols-3">
-                      <div className="md:col-span-1">
-                        <Label htmlFor="country">Country</Label>
-                        <Select value={country} onValueChange={setCountry}>
-                          <SelectTrigger id="country">
-                            <SelectValue placeholder="Select country" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {COUNTRIES.map((c) => (
-                              <SelectItem key={c} value={c}>{c}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <div className="text-xs text-muted-foreground mt-2">
-                          API placeholders: IRCC (Canada), UKVI (UK), USCIS (US), BAMF (Germany)
-                        </div>
-                      </div>
-
-                      <div className="md:col-span-2 space-y-4">
-                        {(VISA_DATA[country]?.visas || []).map((v) => (
-                          <div key={v.type} className="border rounded-md p-4">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="min-w-0">
-                                <p className="font-medium break-words">{v.type}</p>
-                                <p className="text-xs text-muted-foreground">Processing time: {v.processing}</p>
-                              </div>
-                              <Badge variant="secondary" className="whitespace-nowrap">{VISA_DATA[country].country}</Badge>
-                            </div>
-                            <div className="mt-3 grid gap-3 md:grid-cols-2">
-                              <div>
-                                <p className="text-sm font-medium">Eligibility</p>
-                                <ul className="list-disc pl-5 text-sm space-y-1">
-                                  {v.eligibility.map((e, i) => (<li key={i} className="break-words">{e}</li>))}
-                                </ul>
-                              </div>
-                              <div>
-                                <p className="text-sm font-medium">Required Documents</p>
-                                <ul className="list-disc pl-5 text-sm space-y-1">
-                                  {v.documents.map((d, i) => (<li key={i} className="break-words">{d}</li>))}
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <VisaRequirements
+                    onNavigate={(page) => {
+                      if (page === "wizard" || page === "application") setTab("wizard");
+                      else if (page === "tracking") setTab("tracking");
+                      else setTab("requirements");
+                    }}
+                  />
                 </TabsContent>
 
                 {/* Wizard Tab */}
