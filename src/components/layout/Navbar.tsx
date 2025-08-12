@@ -17,7 +17,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => navigate(-1)}
-            className="md:hidden p-2 rounded-md hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
+            className="p-2 rounded-md hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
             aria-label="Go back"
           >
             <ArrowLeft className="h-5 w-5" />
