@@ -1,13 +1,7 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, ArrowLeft, ChevronDown } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Menu, ArrowLeft } from "lucide-react";
+import LocationSelector from "@/components/layout/LocationSelector";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -33,6 +27,7 @@ export default function Navbar() {
           <NavLink to="/visa" className="text-sm hover:text-foreground/80">Visa</NavLink>
           <NavLink to="/support" className="text-sm hover:text-foreground/80">Support</NavLink>
           <NavLink to="/profile" className="text-sm hover:text-foreground/80">Profile</NavLink>
+          <LocationSelector />
         </div>
 
         <div className="flex items-center gap-2">

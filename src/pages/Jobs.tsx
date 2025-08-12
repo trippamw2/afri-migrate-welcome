@@ -13,6 +13,7 @@ import { getUser } from "@/lib/auth";
 import { ExternalLink, BadgeCheck, Lock, Loader2, Filter } from "lucide-react";
 import { MobileCard } from "@/components/ui/mobile-card";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
+import { usePreferences } from "@/context/PreferencesContext";
 
 // Mock job data (visaSponsored + premium gating + source placeholders)
 // Later: Replace with merged results from Job Bank Canada, USAJobs, Adzuna, EURES
@@ -43,6 +44,7 @@ export default function Jobs() {
   const user = getUser();
   const isPremium = false; // TODO: derive from real subscription state
   const { toast } = useToast();
+  const { destination, destinations } = usePreferences();
 
   const [query, setQuery] = useState("");
   const [location, setLocation] = useState("");
@@ -50,8 +52,8 @@ export default function Jobs() {
   const [skills, setSkills] = useState("");
   const [tab, setTab] = useState<"visa" | "nonVisa">("visa");
   const [page, setPage] = useState(1);
-const pageSize = 6;
-const [loadingNext, setLoadingNext] = useState(false);
+  const pageSize = 6;
+  const [loadingNext, setLoadingNext] = useState(false);
 
   // Filter logic
   const results = useMemo(() => {
@@ -72,8 +74,26 @@ const [loadingNext, setLoadingNext] = useState(false);
     if (skillList.length)
       list = list.filter((j) => skillList.every((s) => j.skills.join(" ").toLowerCase().includes(s)));
 
+    // Global destination preference filter
+    if (destination) {
+      const destMeta = destinations.find(d => d.code === destination);
+      const synonyms = new Set<string>();
+      if (destMeta) {
+        synonyms.add(destMeta.name.toLowerCase());
+        synonyms.add(destMeta.code.toLowerCase());
+        // common alternates
+        if (destMeta.code === "UK") synonyms.add("united kingdom");
+        if (destMeta.code === "US") synonyms.add("united states");
+      }
+      list = list.filter(j => {
+        const locLower = j.location.toLowerCase();
+        for (const s of synonyms) { if (s && locLower.includes(s)) return true; }
+        return synonyms.size === 0 ? true : false;
+      });
+    }
+
     return list;
-  }, [query, location, jobType, skills, tab]);
+  }, [query, location, jobType, skills, tab, destination, destinations]);
 
   const paged = results.slice(0, page * pageSize);
   const hasMore = results.length > paged.length;

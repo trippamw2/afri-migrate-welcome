@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Lock, ExternalLink, Upload } from "lucide-react";
 import VisaRequirements from "@/components/visa/VisaRequirements";
+import { usePreferences } from "@/context/PreferencesContext";
 
 // -------------------- Mock Data --------------------
 const VISA_DATA: Record<string, {
@@ -88,6 +89,7 @@ function saveApps(apps: VisaApplication[]) {
 // -------------------- Component --------------------
 export default function Visa() {
   const { toast } = useToast();
+  const { destination, destinations } = usePreferences();
   const [tab, setTab] = useState<"requirements" | "wizard" | "tracking">("requirements");
 
   // Requirements
@@ -126,6 +128,16 @@ export default function Visa() {
     languageScore: "",
     targetCountry: COUNTRIES[0] || "Canada",
   });
+
+  // Sync preferred destination to wizard + requirements
+  useEffect(() => {
+    if (!destination) return;
+    const destName = destinations.find(d => d.code === destination)?.name;
+    if (destName && VISA_DATA[destName]) {
+      setCountry(destName);
+      setForm((f) => ({ ...f, targetCountry: destName }));
+    }
+  }, [destination, destinations]);
 
   // File uploads
   const [files, setFiles] = useState<File[]>([]);

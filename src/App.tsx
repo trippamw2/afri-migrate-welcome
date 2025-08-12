@@ -18,34 +18,36 @@ import Pricing from "./pages/Pricing";
 import PricingFreemium from "./pages/PricingFreemium";
 import PricingPro from "./pages/PricingPro";
 import PricingPremium from "./pages/PricingPremium";
-
+import { PreferencesProvider } from "@/context/PreferencesContext";
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/jobs" element={<Jobs />} />
-          <Route path="/skills" element={<Skills />} />
-          <Route path="/visa" element={<Visa />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/addons" element={<Addons />} />
-          <Route path="/support" element={<HelpCenter />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/pricing/freemium" element={<PricingFreemium />} />
-          <Route path="/pricing/pro" element={<PricingPro />} />
-          <Route path="/pricing/premium" element={<PricingPremium />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <PreferencesProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/jobs" element={<Jobs />} />
+            <Route path="/skills" element={<Skills />} />
+            <Route path="/visa" element={<Visa />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/addons" element={<Addons />} />
+            <Route path="/support" element={<HelpCenter />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/pricing/freemium" element={<PricingFreemium />} />
+            <Route path="/pricing/pro" element={<PricingPro />} />
+            <Route path="/pricing/premium" element={<PricingPremium />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </PreferencesProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
