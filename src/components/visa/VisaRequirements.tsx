@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileText } from "lucide-react";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { usePreferences } from "@/context/PreferencesContext";
 export interface VisaRequirementsProps {
   onNavigate: (page: string) => void;
 }
@@ -47,12 +47,20 @@ const destinations = [
 const travelPurposes = ["Tourism", "Business", "Study", "Work", "Transit", "Medical", "Family Visit"];
 
 export default function VisaRequirements({ onNavigate }: VisaRequirementsProps) {
+  const { origin, destination, setOrigin, setDestination, t, africanOrigins, destinations: prefDests } = usePreferences();
   const [fromCountry, setFromCountry] = useState("");
   const [destinationCountry, setDestinationCountry] = useState("");
   const [travelPurpose, setTravelPurpose] = useState("");
   const [passportNationality, setPassportNationality] = useState("");
   const [results, setResults] = useState<RequirementResult | null>(null);
 
+  // Sync local selections with global preferences
+  useEffect(() => {
+    const originName = africanOrigins.find((c) => c.code === origin)?.name;
+    const destName = prefDests.find((c) => c.code === destination)?.name;
+    if (originName) setFromCountry(originName);
+    if (destName) setDestinationCountry(destName);
+  }, [origin, destination, africanOrigins, prefDests]);
   function handleCheckRequirements() {
     const mockResults: RequirementResult = {
       country: fromCountry,
@@ -116,8 +124,8 @@ export default function VisaRequirements({ onNavigate }: VisaRequirementsProps) 
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-foreground">From Country</label>
-          <Select value={fromCountry} onValueChange={setFromCountry}>
+          <label className="text-sm font-medium text-foreground">{t('origin')}</label>
+          <Select value={fromCountry} onValueChange={(v) => { setFromCountry(v); const code = africanOrigins.find(c=>c.name===v)?.code; if (code) setOrigin(code); }}>
             <SelectTrigger>
               <SelectValue placeholder="Select your country" />
             </SelectTrigger>
@@ -132,8 +140,8 @@ export default function VisaRequirements({ onNavigate }: VisaRequirementsProps) 
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-foreground">Destination Country</label>
-          <Select value={destinationCountry} onValueChange={setDestinationCountry}>
+          <label className="text-sm font-medium text-foreground">{t('destination')}</label>
+          <Select value={destinationCountry} onValueChange={(v) => { setDestinationCountry(v); const code = prefDests.find(c=>c.name===v)?.code; if (code) setDestination(code); }}>
             <SelectTrigger>
               <SelectValue placeholder="Select destination" />
             </SelectTrigger>
