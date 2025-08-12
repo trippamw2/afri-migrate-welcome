@@ -101,7 +101,7 @@ const Index = () => {
             </div>
             <div className="grid gap-6 md:grid-cols-3">
               {/* Freemium */}
-              <Card className="animate-enter">
+              <Card id="pricing-freemium" className="animate-enter">
                 <CardHeader>
                   <CardTitle>Freemium</CardTitle>
                   <CardDescription>Core tools to begin</CardDescription>
@@ -118,7 +118,7 @@ const Index = () => {
               </Card>
 
               {/* Pro */}
-              <Card className="animate-enter">
+              <Card id="pricing-pro" className="animate-enter">
                 <CardHeader>
                   <CardTitle>Pro</CardTitle>
                   <CardDescription>More support</CardDescription>
@@ -135,7 +135,7 @@ const Index = () => {
               </Card>
 
               {/* Premium */}
-              <Card className="border-accent animate-enter">
+              <Card id="pricing-premium" className="border-accent animate-enter">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">Premium <span className="text-xs rounded bg-accent text-accent-foreground px-2 py-0.5">Popular</span></CardTitle>
                   <CardDescription>1:1 mentorship</CardDescription>

@@ -1,6 +1,13 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, ArrowLeft } from "lucide-react";
+import { Menu, ArrowLeft, ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -26,7 +33,28 @@ export default function Navbar() {
           <NavLink to="/profile" className="text-sm hover:text-foreground/80">Profile</NavLink>
           <NavLink to="/visa" className="text-sm hover:text-foreground/80">Visa</NavLink>
           <NavLink to="/support" className="text-sm hover:text-foreground/80">Support</NavLink>
-          <NavLink to="/pricing" className="text-sm hover:text-foreground/80">Pricing</NavLink>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger className="text-sm inline-flex items-center gap-1 rounded-md px-2 py-1 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring">
+              Pricing <ChevronDown className="h-4 w-4" aria-hidden />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="z-50 bg-popover">
+              <DropdownMenuLabel className="text-xs text-muted-foreground">Plans</DropdownMenuLabel>
+              <DropdownMenuItem asChild>
+                <a href="/#pricing-freemium">Freemium</a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a href="/#pricing-pro">Pro</a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a href="/#pricing-premium">Premium</a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/pricing">Full Pricing</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <NavLink to="/#contact" className="text-sm hover:text-foreground/80">Contact</NavLink>
         </div>
 

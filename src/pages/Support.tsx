@@ -9,8 +9,17 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
-import { MessageSquare, Users, Star, Link as LinkIcon, Crown } from "lucide-react";
+import { MessageSquare, Users, Star, Link as LinkIcon, Crown, ThumbsUp, ThumbsDown, Tag } from "lucide-react";
 import { MobileCard } from "@/components/ui/mobile-card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import Navbar from "@/components/layout/Navbar";
 
 const isPremium = () => localStorage.getItem("am_subscription") === "premium";
@@ -25,6 +34,8 @@ type Thread = {
   title: string;
   author: string;
   createdAt: number;
+  tags: string[];
+  votes: number;
   posts: { id: string; author: string; text: string; ts: number }[];
 };
 const FORUM_KEY = "am_forum_threads";
@@ -179,6 +190,23 @@ const ChatbotCard: React.FC = () => {
           <Input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask a question..." aria-label="Ask a question" />
           <Button type="submit">Send</Button>
         </form>
+        <div className="mt-3">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline">Escalate to human</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Contact Support</DialogTitle>
+                <DialogDescription>Send details to our team. Connect Supabase to enable ticketing/email.</DialogDescription>
+              </DialogHeader>
+              <SupportEscalationForm />
+              <DialogFooter>
+                <p className="text-xs text-muted-foreground">We’ll reply in-app. Email requires Supabase integration.</p>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
       </CardContent>
     </Card>
   );
@@ -200,13 +228,14 @@ const CommunitySection: React.FC = () => {
       if (raw) return JSON.parse(raw);
     } catch {}
     const seed: Thread[] = [
-      { id: crypto.randomUUID(), title: "Canada Study Permit timeline 2025", author: "Ada", createdAt: Date.now() - 86400000, posts: [ { id: crypto.randomUUID(), author: "Ada", text: "Submitted in May, biometrics in June.", ts: Date.now() - 86300000 } ] },
-      { id: crypto.randomUUID(), title: "UK Skilled Worker visa docs checklist", author: "Kwame", createdAt: Date.now() - 43200000, posts: [ { id: crypto.randomUUID(), author: "Kwame", text: "Employer CoS, TB test, funds.", ts: Date.now() - 43100000 } ] },
+      { id: crypto.randomUUID(), title: "Canada Study Permit timeline 2025", author: "Ada", createdAt: Date.now() - 86400000, tags: ["Canada", "Study"], votes: 3, posts: [ { id: crypto.randomUUID(), author: "Ada", text: "Submitted in May, biometrics in June.", ts: Date.now() - 86300000 } ] },
+      { id: crypto.randomUUID(), title: "UK Skilled Worker visa docs checklist", author: "Kwame", createdAt: Date.now() - 43200000, tags: ["UK", "Work"], votes: 5, posts: [ { id: crypto.randomUUID(), author: "Kwame", text: "Employer CoS, TB test, funds.", ts: Date.now() - 43100000 } ] },
     ];
     return seed;
   });
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState("");
+  const [newTags, setNewTags] = useState("");
   const [newPost, setNewPost] = useState("");
 
   useEffect(() => {
@@ -218,9 +247,11 @@ const CommunitySection: React.FC = () => {
   const addThread = () => {
     const title = newTitle.trim();
     if (!title) return toast({ title: "Enter a topic title", variant: "destructive" });
-    const t: Thread = { id: crypto.randomUUID(), title, author: "You", createdAt: Date.now(), posts: [] };
+    const tags = newTags.split(',').map((t) => t.trim()).filter(Boolean).slice(0, 5);
+    const t: Thread = { id: crypto.randomUUID(), title, author: "You", createdAt: Date.now(), tags, votes: 0, posts: [] };
     setThreads([t, ...threads]);
     setNewTitle("");
+    setNewTags("");
   };
 
   const addPost = () => {
@@ -228,6 +259,10 @@ const CommunitySection: React.FC = () => {
     if (!text) return toast({ title: "Write a post message", variant: "destructive" });
     setThreads((prev) => prev.map((t) => t.id === selected.id ? { ...t, posts: [...t.posts, { id: crypto.randomUUID(), author: "You", text, ts: Date.now() }] } : t));
     setNewPost("");
+  };
+
+  const vote = (id: string, delta: number) => {
+    setThreads((prev) => prev.map((t) => t.id === id ? { ...t, votes: Math.max(0, t.votes + delta) } : t));
   };
 
   return (
@@ -238,9 +273,13 @@ const CommunitySection: React.FC = () => {
           <CardDescription>Share experiences and tips.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-2">
-            <Input value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Start a topic" />
-            <Button onClick={addThread}>Post</Button>
+          <div className="flex flex-col gap-2">
+            <div className="grid gap-2 md:grid-cols-[1fr,1fr,auto]">
+              <Input value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Start a topic title" aria-label="Thread title" />
+              <Input value={newTags} onChange={(e) => setNewTags(e.target.value)} placeholder="Tags (comma separated)" aria-label="Thread tags" />
+              <Button onClick={addThread}>Post</Button>
+            </div>
+            <p className="text-xs text-muted-foreground">Use tags like "Canada, Work".</p>
           </div>
           <ul className="mt-4 space-y-2">
             {threads.map((t) => (
@@ -256,8 +295,26 @@ const CommunitySection: React.FC = () => {
       </Card>
       <Card className="md:col-span-2">
         <CardHeader>
-          <CardTitle>{selected?.title || "Select a thread"}</CardTitle>
-          <CardDescription>Join the discussion.</CardDescription>
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <CardTitle>{selected?.title || "Select a thread"}</CardTitle>
+              <CardDescription>Join the discussion.</CardDescription>
+              {selected && (
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {selected.tags.map((tag) => (
+                    <Badge key={tag} variant="secondary" className="text-[10px]">{tag}</Badge>
+                  ))}
+                </div>
+              )}
+            </div>
+            {selected && (
+              <div className="flex items-center gap-1 mt-1">
+                <Button size="icon" variant="ghost" onClick={() => vote(selected.id, 1)} aria-label="Upvote thread"><ThumbsUp className="h-4 w-4" /></Button>
+                <span className="text-sm min-w-[1.5rem] text-center">{selected.votes}</span>
+                <Button size="icon" variant="ghost" onClick={() => vote(selected.id, -1)} aria-label="Downvote thread"><ThumbsDown className="h-4 w-4" /></Button>
+              </div>
+            )}
+          </div>
         </CardHeader>
         <CardContent>
           {!selected ? (
@@ -338,3 +395,38 @@ const ResourcesSection: React.FC = () => {
 };
 
 export default SupportPage;
+
+// Escalation form component
+const SupportEscalationForm: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !message) return toast({ title: "Please fill all fields", variant: "destructive" });
+    // Placeholder: store locally; connect Supabase to create ticket + send email
+    try {
+      const raw = localStorage.getItem("am_support_tickets");
+      const tickets = raw ? JSON.parse(raw) : [];
+      tickets.push({ id: crypto.randomUUID(), email, message, ts: Date.now() });
+      localStorage.setItem("am_support_tickets", JSON.stringify(tickets));
+      toast({ title: "Submitted", description: "Your request has been sent." });
+      setEmail("");
+      setMessage("");
+    } catch {
+      toast({ title: "Error", description: "Could not submit request", variant: "destructive" });
+    }
+  };
+
+  return (
+    <form onSubmit={submit} className="grid gap-2">
+      <Label htmlFor="support-email">Email</Label>
+      <Input id="support-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com" />
+      <Label htmlFor="support-message">Message</Label>
+      <Textarea id="support-message" value={message} onChange={(e) => setMessage(e.target.value)} required placeholder="Describe your issue..." />
+      <div className="mt-2">
+        <Button type="submit">Send</Button>
+      </div>
+    </form>
+  );
+};
