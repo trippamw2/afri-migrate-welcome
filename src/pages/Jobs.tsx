@@ -346,21 +346,45 @@ export default function Jobs() {
                 </CardContent>
               </Card>
 
-              <Card className="mt-4">
-                <CardHeader>
-                  <CardTitle>Data Sources</CardTitle>
-                  <CardDescription>Placeholders for APIs</CardDescription>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground space-y-1">
-                  <p>• Job Bank Canada</p>
-                  <p>• USAJobs</p>
-                  <p>• Adzuna</p>
-                  <p>• EURES</p>
-                </CardContent>
-                <CardFooter>
-                  <p className="text-xs text-muted-foreground">Integrate via Supabase Edge Functions.</p>
-                </CardFooter>
-              </Card>
+                <Card className="mt-4">
+                  <CardHeader>
+                    <CardTitle>Data Sources</CardTitle>
+                    <CardDescription>Placeholders for APIs</CardDescription>
+                  </CardHeader>
+                  <CardContent className="text-sm text-muted-foreground space-y-1">
+                    <p>• Job Bank Canada</p>
+                    <p>• USAJobs</p>
+                    <p>• Adzuna</p>
+                    <p>• EURES</p>
+                  </CardContent>
+                  <CardFooter>
+                    <p className="text-xs text-muted-foreground">Integrate via Supabase Edge Functions.</p>
+                  </CardFooter>
+                </Card>
+
+                {/* Featured employers logos */}
+                <Card className="mt-4" aria-labelledby="featured-employers">
+                  <CardHeader>
+                    <CardTitle id="featured-employers">Featured employers</CardTitle>
+                    <CardDescription>Leading automation companies hiring globally</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-center gap-6 sm:gap-8 flex-wrap">
+                      <img
+                        src="/lovable-uploads/e6fec5bd-d7b8-43e5-b4d7-534a29dea236.png"
+                        alt="Automation Anywhere logo"
+                        loading="lazy"
+                        className="h-12 sm:h-16 object-contain"
+                      />
+                      <img
+                        src="/lovable-uploads/f38651a8-61f7-4b84-8877-251eb125ad5d.png"
+                        alt="UiPath logo"
+                        loading="lazy"
+                        className="h-12 sm:h-16 object-contain"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
             </aside>
           </div>
         </section>
